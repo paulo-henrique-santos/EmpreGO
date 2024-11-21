@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}EmpreGO! 💼 - Painel do ADM 👨🏽‍💻{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Painel do Administrador 👨🏽‍💻</h1>
+
+      <a href="/cadastrar_empresa" class="btn btn-success btn me-2">Cadastrar Empresa</a>
+
+    <h2 class="mt-3 text-success">Empresas Ativas ✅</h2>
+    <div class="row mt-4">
+        {% if empresas_ativas %}
+            {% for empresa in empresas_ativas %}
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ empresa.Nome_Empresa }}</h5>
+                      <p class="card-text">
+                        <strong>CNPJ:</strong> {{ empresa.CNPJ }}<br>
+                        <strong>E-mail:</strong> {{ empresa.Email }}<br>
+                        <strong>Telefone:</strong> {{ empresa.Telefone }}
+                      </p>
+                      <a href="/editar_empresa/{{ empresa.Id_Empresa }}" class="btn btn-info btn-sm me-2">Editar</a>
+                      <a href="/status_empresa/{{ empresa.Id_Empresa }}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja inativar esta empresa?')">Inativar</a>
+                    </div>
+                  </div>                  
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Nenhuma empresa ativa cadastrada.</p>
+        {% endif %}
+    </div>
+
+    <h2 class="text-danger">Empresas Inativas ⛔</h2>
+    <div class="row mt-4">
+      {% if empresas_inativas %}
+          {% for empresa in empresas_inativas %}
+              <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ empresa.Nome_Empresa }}</h5>
+                    <p class="card-text">
+                      <strong>CNPJ:</strong> {{ empresa.CNPJ }}<br>
+                      <strong>E-mail:</strong> {{ empresa.Email }}<br>
+                      <strong>Telefone:</strong> {{ empresa.Telefone }}
+                    </p>
+                    <a href="/editar_empresa/{{ empresa.Id_Empresa }}" class="btn btn-info btn-sm me-2">Editar</a>
+                    <a href="/status_empresa/{{ empresa.Id_Empresa }}" class="btn btn-success btn-sm me-2" onclick="return confirm('Tem certeza que deseja ativar essa empresa?')">Ativar</a>
+                    <a href="/excluir_empresa/{{ empresa.Id_Empresa }}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir esta empresa?')">Excluir</a>
+                  </div>
+                </div>
+              </div>
+          {% endfor %}
+      {% else %}
+          <p>Nenhuma empresa inativa cadastrada.</p>
+      {% endif %}
+  </div>
+
+</div>
+
+{% endblock %}

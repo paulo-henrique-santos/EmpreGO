@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- LINKS PARA BOOTSTRAP, CSS, ETC... -->
+    <link rel="stylesheet" href="../static/bootstrap/css/lux.min.css">
+    <link rel="stylesheet" href="../static//css/style.css">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body class="d-flex flex-column">
+    <!-- HEADER -->
+    <header>
+        {% include 'header.html' %}
+      </header>
+    <!-- MAIN -->
+    <main class="container mt-5 flex-fill">
+        {% block content %}
+        {% endblock %}
+    </main>
+    <!-- FOOTER -->
+    <footer class="bg-danger text-light text-center py-3 mt-2">
+       {% include 'footer.html' %}
+    </footer>
+    <script src="../static/bootstrap/js/bootstrap.js"></script>
+</body>
+</html>

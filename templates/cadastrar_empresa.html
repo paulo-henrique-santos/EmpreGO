@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}EmpreGO! 💼 - Cadastrar Empresa 📝{% endblock %}
+
+{% block content %}
+
+<h1>EmpreGO! 💼</h1>
+<h2>Cadastrar Nova Empresa</h2>
+<p class="my-2">Menu</p>
+
+    <a href="/adm" class="btn btn-danger btn-sm me-2">Voltar</a>
+
+<hr>
+<form action="/cadastrar_empresa" method="post">
+
+    <label for="nome_empresa">Nome Fantasia da Empresa:</label><br>
+    <input type="text" name="nome_empresa" required><br><br>
+
+    <label for="cnpj">CNPJ:</label><br>
+    <input type="text" name="cnpj" maxlength="14" placeholder="Somente números"><br><br>
+
+    <label for="telefone">Telefone de Contato:</label><br>
+    <input type="text" name="telefone" maxlength="11" placeholder="Somente números"><br><br>
+
+    <h2>Informações para acesso da plataforma</h2>
+    <label for="email">E-mail:</label><br>
+    <input type="email" name="email"><br><br>
+
+    <label for="senha">Senha:</label><br>
+    <input type="senha" name="senha"><br><br>
+
+    <button type="submit" class="btn btn-success btn-md mb-3">Cadastrar Empresa</button>
+    {% if msg_erro %} <p style="color: red;">{{msg_erro}}</p> {% endif %}
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}EmpreGO 💼 - Editar Empresa 📝{% endblock %}
+{% block content %}
+
+<h1 class="text-danger">EmpreGO! 💼</h1>
+<h2>Editar Empresa 📝</h2>
+<p>Menu</p>
+<ul>
+    <li><a href="/adm">Voltar</a></li>
+</ul>
+<hr>
+<form action="/editar_empresa/{{empresa['Id_Empresa']}}" method="post">
+
+    <label for="nome_empresa">Nome Fantasia da Empresa:</label><br>
+    <input type="text" name="nome_empresa" value="{{empresa['Nome_Empresa']}}" required><br><br>
+
+    <label for="cnpj">CNPJ:</label><br>
+    <input type="text" name="cnpj" value="{{empresa['CNPJ']}}" maxlength="14" placeholder="Somente números"><br><br>
+
+    <label for="telefone">Telefone de Contato:</label><br>
+    <input type="text" name="telefone" value="{{empresa['Telefone']}}" maxlength="11" placeholder="Somente números"><br><br>
+
+    <h2>Informações para acesso da plataforma</h2>
+
+    <label for="email">E-mail:</label><br>
+    <input type="email" name="email" value="{{empresa['Email']}}"><br><br>
+
+    <label for="senha">Senha:</label><br>
+    <input type="senha" name="senha" value="{{empresa['Senha']}}"><br><br>
+
+    <button type="submit" class="mb-4">Confirmar Edição</button>
+    {% if msg_erro %} <p style="color: red;">{{msg_erro}}</p> {% endif %}
+
+</form>
+
+{% endblock %}

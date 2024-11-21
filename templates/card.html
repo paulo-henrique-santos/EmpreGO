@@ -1,0 +1,20 @@
+<div class="card mb-4 shadow">
+    <div class="card-body">
+        <h5 class="card-title text-primary mt-2">
+            {{ vaga.Titulo }}
+        </h5>
+        <h6 class="card-subtitle mt-3 mb-3 text-muted">
+            {{ vaga.Nome_Empresa }}
+        </h6>
+        <p class="card-text">
+            {{ vaga.Descricao | truncate(100) }}
+        </p>  
+        <p class="card-text">
+            <small class="text-muted">
+                {{ vaga.Formato }} - {{ vaga.Tipo }}
+            </small></p>
+        <a href="/sobre_vaga/{{ vaga.Id_Vaga }}" class="btn btn-primary">
+            Ver mais
+        </a>
+    </div>
+</div>

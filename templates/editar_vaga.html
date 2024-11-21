@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}EmpreGO! 💼 - Editar Vaga 📝{% endblock %}
+
+{% block content %}
+
+<h1 class="text-danger">EmpreGO! 💼</h1>
+<ul>
+    <li><a href="/adm">Voltar</a></li>
+</ul>
+<hr>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1>Editar Vaga 📝</h1>
+
+            {% if msg_erro %}  <!-- Exibe mensagem de erro, se houver -->
+                <div class="alert alert-danger" role="alert">
+                    {{ msg_erro }}
+                </div>
+            {% endif %}
+
+            <form action="/editar_vaga/{{ vaga.Id_Vaga }}" method="post">
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Título da Vaga</label>
+                    <input type="text" class="form-control" id="titulo" name="titulo" value="{{vaga.Titulo}}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Descrição da Vaga</label>
+                    <textarea class="form-control" id="descricao" name="descricao" rows="5" required>{{vaga.Descricao}}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="formato" class="form-label">Formato de Trabalho</label>
+                    <select class="form-select" id="formato" name="formato" required>
+                        <option {% if vaga.formato == 'Presencial' %} selected {% endif %} value="Presencial">Presencial</option>
+                        <option {% if vaga.formato == 'Remoto' %} selected {% endif %} value="Remoto">Remoto</option>
+                        <option {% if vaga.formato == 'Híbrido' %} selected {% endif %} value="Híbrido">Híbrido</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="tipo" class="form-label">Tipo de Contrato</label>
+                    <select class="form-select" id="tipo" name="tipo" required>
+                        <option {% if vaga.tipo == 'CLT' %} selected {% endif %} value="CLT">CLT</option>
+                        <option {% if vaga.tipo == 'PJ' %} selected {% endif %} value="PJ">PJ</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="local" class="form-label">Local da Vaga (se aplicável)</label>
+                    <input type="text" class="form-control" id="local" name="local" value="{{vaga.Local}}">
+                </div>
+                <div class="mb-3">
+                    <label for="salario" class="form-label">Salário (opcional)</label>
+                    <input type="number" step="0.01" class="form-control" id="salario" name="salario" value="{{vaga.Salario}}">
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Editar Vaga</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
