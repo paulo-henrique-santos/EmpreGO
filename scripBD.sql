@@ -25,6 +25,16 @@ CREATE TABLE Vaga (
     FOREIGN KEY (Id_Empresa) REFERENCES Empresa (Id_Empresa)
 );
 
+CREATE TABLE candidato (
+    id_candidato INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    telefone CHAR(11) NOT NULL,
+    curriculo VARCHAR(50) NOT NULL,
+    id_vaga INT,
+    FOREIGN KEY (id_vaga) REFERENCES Vaga (Id_Vaga)
+);
+
 INSERT INTO empresa (nome_empresa, cnpj, telefone, email, senha, status)
 VALUES
 ('Tech Solutions', '12345678000199', '11987654321', 'contato@techsolutions.com.br', 'senha123', 'ativa'),
