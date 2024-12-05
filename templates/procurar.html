@@ -1,1 +1,34 @@
+{% extends 'base.html' %}
 
+{% block title %}EmpreGO 💼 - Página Inicial 🚀{% endblock %}
+
+{% block content %}
+
+{% for resultado in resultados %}
+<div class="card mb-4 shadow">
+    <div class="card-body text-center">
+        <h5 class="card-title text-primary mt-2">
+            {{ resultado.Titulo }}
+        </h5>
+        <h6 class="card-subtitle mt-3 mb-3 text-muted">
+            {{ resultado.Nome_Empresa }}
+        </h6>
+        <p class="card-text">
+            {{ resultado.Descricao }}
+        </p>  
+        <p class="card-text">
+            <small class="text-muted">
+                {{ resultado.Formato }} - {{ resultado.Tipo }}
+            </small></p>
+        <a href="/sobre_vaga/{{ resultado.Id_Vaga }}" class="btn btn-primary">
+            Ver mais
+        </a>
+    </div>
+</div>
+
+{% else %}
+
+<p>Nenhum resultado encontrado.</p>
+
+{% endfor %}
+{% endblock %}
