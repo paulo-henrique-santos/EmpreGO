@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}EmpreGO 💼 - Página Currículo 📜{% endblock %}
+
+{% block content %}
+
+{% for curriculo in curriculo %}
+
+<div class="col-12 col-md-6 col-lg-4 mb-4">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">{{ curriculo.nome }}</h5>
+        <p class="card-text">
+          <strong>N°:</strong> {{ curriculo.id_candidato }}<br>
+          <strong>Email:</strong> {{ curriculo.email }}<br>
+          <strong>Telefone:</strong> {{ curriculo.telefone }}
+        </p>
+        <a href="/download/{{curriculo.curriculo}}" class="download btn btn-info btn-sm me-2" target="_blank">Visualizar</a>
+        <a href="/delete/{{curriculo.curriculo}}" class="excluir btn btn-danger btn-sm me-2"onclick="return confirm('Tem certeza que deseja inativar esta empresa?')">Excluir</a>
+      </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="container-fluid d-flex justify-content-center text-center flex-column">
+  <h1>NÃO HÁ CURRÍCULOS!</h1>
+  <a href="/" class="btn btn-warning">Ir para Página Inicial</a>
+</div>
+
+{% endfor %}
+
+{% endblock %}
