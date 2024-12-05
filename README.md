@@ -21,6 +21,10 @@ A EmpreGO! tem como objetivo atender uma problemática atual da cidade de Itapev
 ## Funcionalidades do Sistema
 
  - Esse sistema está previsto a ter 3 tipos de usuários diferentes, usuário padrão, empresa e administrador;
+ - A segurança do nosso sistema é de alta qualidade;
+ - O sistema é responsivo, ou seja, o sistema tem compatibilidade para telas pequenas e extra grandes;
+ - O sistema tem o carregamento rápido;
+ - O sistema funciona em diversos navegadores padrões;
 ## Funcionalidades do Usuário Padrão
 
  - Os usuários tem acesso a vagas da emprego atualizadas;
