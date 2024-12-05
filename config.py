@@ -3,13 +3,13 @@ ambiente = 'desenvolvimento'
 if ambiente == 'desenvolvimento':
     DB_HOST = 'localhost'
     DB_USER = 'root'
-    DB_PASSWORD = 'senai'
+    DB_PASSWORD = 'senhaexemplo'
     DB_NAME = 'emprego'
 
 #CONFIG CHAVE SUPER SECRETA OMG :OOOOOOOOOO (SESSION)
 
-SECRET_KEY = 'emprego'
+SECRET_KEY = 'chavesecreta'
 
 #ACESSO DO ADMININASTRÔ
-MASTER_EMAIL = 'adm@adm'
-MASTER_PASSWORD = 'adm'
+MASTER_EMAIL = 'email@exemplo'
+MASTER_PASSWORD = 'senhaexemplo'
