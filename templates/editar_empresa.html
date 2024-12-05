@@ -9,28 +9,92 @@
     <li><a href="/adm">Voltar</a></li>
 </ul>
 <hr>
-<form action="/editar_empresa/{{empresa['Id_Empresa']}}" method="post">
+<form action="/editar_empresa/{{empresa['Id_Empresa']}}" method="post" class="needs-validation" novalidate>
 
-    <label for="nome_empresa">Nome Fantasia da Empresa:</label><br>
+    <label for="nome_empresa">Nome da Empresa:</label><br>
     <input type="text" name="nome_empresa" value="{{empresa['Nome_Empresa']}}" required><br><br>
+    <div class="valid-feedback">
+        Parece bom!
+      </div>
+      <div class="invalid-feedback">
+        Preencha o campo "Nome da Empresa"
+      </div>
+
 
     <label for="cnpj">CNPJ:</label><br>
-    <input type="text" name="cnpj" value="{{empresa['CNPJ']}}" maxlength="14" placeholder="Somente números"><br><br>
+    <input type="text" name="cnpj" id="cnpj" value="{{empresa['CNPJ']}}"><br><br>
+    <div class="valid-feedback">
+        Parece bom!
+      </div>
+      <div class="invalid-feedback">
+        Preencha o campo "CNPJ"
+      </div>
+
 
     <label for="telefone">Telefone de Contato:</label><br>
-    <input type="text" name="telefone" value="{{empresa['Telefone']}}" maxlength="11" placeholder="Somente números"><br><br>
+    <input type="text" name="telefone" id="telefone" value="{{empresa['Telefone']}}" required><br><br>
+    <div class="valid-feedback">
+        Parece bom!
+      </div>
+      <div class="invalid-feedback">
+        Preencha o campo "Telefone de Contato"
+      </div>
+
 
     <h2>Informações para acesso da plataforma</h2>
 
     <label for="email">E-mail:</label><br>
-    <input type="email" name="email" value="{{empresa['Email']}}"><br><br>
+    <input type="email" name="email" value="{{empresa['Email']}}" required><br><br>
+    <div class="valid-feedback">
+        Parece bom!
+      </div>
+      <div class="invalid-feedback">
+        Preencha o campo "E-mail"
+      </div>
 
     <label for="senha">Senha:</label><br>
-    <input type="senha" name="senha" value="{{empresa['Senha']}}"><br><br>
+    <input type="senha" name="senha" value="{{empresa['Senha']}}" required><br><br>
+    <div class="valid-feedback">
+        Parece bom!
+      </div>
+      <div class="invalid-feedback">
+        Preencha o campo "Senha"
+      </div>
+
 
     <button type="submit" class="mb-4">Confirmar Edição</button>
-    {% if msg_erro %} <p style="color: red;">{{msg_erro}}</p> {% endif %}
 
 </form>
+
+<!-- Script do BS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+<script>
+    (() => {
+      'use strict'
+    
+      const forms = document.querySelectorAll('.needs-validation')
+    
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+    
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+    </script>
+
+    <!-- Link do Input Mask -->
+<script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
+
+<script>
+    Inputmask("99.999.999/9999-99").mask(document.getElementById("cnpj")); //Máscara para CNPJ
+    Inputmask("(99)99999-9999").mask(document.getElementById("telefone")); //Máscara para Telefone
+</script>
+
 
 {% endblock %}
