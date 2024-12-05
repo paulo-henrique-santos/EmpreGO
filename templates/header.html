@@ -2,6 +2,10 @@
     <div class="container">
       <a class="navbar-brand" href="/">EmpreGO! 💼</a>
       <span class="fs-6 text-secondary"></span>
+      <form class="d-flex" role="search" action="/procurar" method="POST">
+        <input class="form-control me-2 rounded-start" type="search" placeholder="Search" name="pesquisar" aria-label="Search">
+        <button class="btn btn-success rounded-end" type="submit">Search</button>
+      </form>
       <button
         class="navbar-toggler"
         type="button"
@@ -35,6 +39,7 @@
           </li>
           
           {% endif %}
+          
         </ul>
       </div>
     </div>
