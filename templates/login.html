@@ -15,14 +15,20 @@
                 </div>
             {% endif %}
 
-            <form action="/login" method="post">
+            <form action="/login" method="post" class="needs-validation" novalidate>
                 <div class="form-floating mb-3">
-                    <input type="email" name="email" class="form-control" id="floatingInput" placeholder="nomedaempresa@email.com">
+                    <input type="email" name="email" class="form-control" id="floatingInput" placeholder="nomedaempresa@email.com" required>
                     <label for="floatingInput">E-mail</label>
+                      <div class="invalid-feedback">
+                        O campo "E-mail" está incorreto ou não está preenchido!!
+                      </div>
                   </div>
                   <div class="form-floating">
-                    <input type="password" name="senha" class="form-control mb-4" id="floatingPassword" placeholder="Insira sua senha">
+                    <input type="password" name="senha" class="form-control mb-4" id="floatingPassword" placeholder="Insira sua senha" required>
                     <label for="floatingPassword">Senha</label>
+                    <div class="invalid-feedback">
+                        O campo "E-mail" está incorreto ou não está preenchido!!
+                      </div>
                   </div>
                 <button type="submit" class="btn btn-success w-100">Acessar</button> <p></p>
                 <p class="text-center"> <a href="/">Voltar</a> </p>
@@ -31,4 +37,23 @@
     </div>
 </div>
 
+<script>// Example starter JavaScript for disabling form submissions if there are invalid fields
+    (() => {
+      'use strict'
+    
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll('.needs-validation')
+    
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+    
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()</script>
 {% endblock %}
