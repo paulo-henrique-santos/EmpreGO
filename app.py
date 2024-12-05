@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, send_from_directory
 from mysql.connector import Error
 from config import *
 from db_functions import *
+import os
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
+app.config['UPLOAD_FOLDER'] = 'uploads/'
 
 #ROTA INICIAL
 @app.route('/')
@@ -136,14 +138,14 @@ def cadastrar_empresa():
     #Tratando os dados vindos do formulario
     if request.method == 'POST':
         nome_empresa = request.form['nome_empresa']
-        cnpj = request.form['cnpj']
-        telefone = request.form['telefone']
+        cnpj = limpar_input(request.form['cnpj'])
+        telefone = limpar_input(request.form['telefone'])
         email = request.form['email']
         senha = request.form['senha']
 
         # Verifica se todos os campos estão preechidos
         if not nome_empresa or not cnpj or not telefone or not email or not senha:
-            return render_template('cadastrar_empresa', msg_erro="Todos os campos são obrigatórios!!")
+            return render_template('cadastrar_empresa.html', msg_erro="Todos os campos são obrigatórios!!")
 
         try:
             conexao, cursor = conectar_db()
@@ -155,7 +157,7 @@ def cadastrar_empresa():
         #Erro de usuario tentar entrar com um email que já existe!
         except Error as erro:
             # Erro número (o "erro")
-            if erro.erro == 1062:
+            if erro.errno == 1062:
                 return render_template('cadastrar_empresa.html', msg_erro="Esse e-mail já existe!!")
             
             else:
@@ -192,8 +194,8 @@ def editar_empresa(id_empresa):
      #Tratando os dados vindos do formulario
     if request.method == 'POST':
         nome_empresa = request.form['nome_empresa']
-        cnpj = request.form['cnpj']
-        telefone = request.form['telefone']
+        cnpj = limpar_input(request.form['cnpj'])
+        telefone = limpar_input(request.form['telefone'])
         email = request.form['email']
         senha = request.form['senha']
         # Verifica se todos os campos estão preechidos
@@ -350,7 +352,7 @@ def editarvaga(id_vaga):
         formato = request.form['formato']
         tipo = request.form['tipo']
         local = request.form['local']
-        salario = request.form['salario']
+        salario = limpar_input(request.form['salario'])
 
         if not titulo or not descricao or not formato or not tipo:
             return redirect('/empresa')
@@ -446,7 +448,7 @@ def cadastrar_vaga():
         local = ''
         local = request.form['local']
         salario = ''
-        salario = request.form['salario']
+        salario = limpar_input(request.form['salario'])
         id_empresa = session['Id_Empresa']
 
         if not titulo or not descricao or not formato or not tipo:
@@ -497,6 +499,123 @@ def sobre_vaga(id_vaga):
 @app.errorhandler(404)
 def not_found(error):
     return render_template('erro404.html'), 404
+
+@app.route("/candidatar/<int:id_vaga>", methods=['GET','POST'])
+def candidatar(id_vaga):
+
+    if session:
+
+        return redirect('/')
+    
+    if request.method == 'GET':
+        try:
+            conexao, cursor = conectar_db()
+            comandoSQL = 'SELECT * FROM Vaga WHERE Id_Vaga = %s'
+            cursor.execute(comandoSQL, (id_vaga,))
+            vaga = cursor.fetchone()
+            return render_template('candidatar.html', vaga=vaga)
+        except Error as erro:
+            return f"Erro de BD: {erro}"
+        except Exception as erro:
+            return f"Erro de BackEnd: {erro}"
+        finally:
+            encerrar_db(cursor, conexao)
+
+    if request.method == 'POST':
+
+        nome_candidato = request.form['nome_candidato']
+        telefone = limpar_input(request.form['telefone'])
+        email = request.form['email']
+        file = request.files['file']
+
+        if file.filename == '':
+            msg = f"Nenhum arquivo enviado!"
+            return render_template('candidatar.html', msg=msg)
+
+        try:
+            conexao, cursor = conectar_db()
+            nome_arquivo = f"{id_vaga}_{file.filename}"
+            comandoSQL = "INSERT INTO candidato (nome, email, telefone, curriculo, id_vaga) VALUES (%s, %s, %s, %s, %s)"
+            cursor.execute(comandoSQL, (nome_candidato, email, telefone, nome_arquivo, id_vaga))
+            conexao.commit()
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], nome_arquivo))
+
+            return redirect('/')
+
+        except Error as erro:
+            return f"Erro de BD: {erro}"
+        except Exception as erro:
+            return f"Erro de BackEnd: {erro}"
+        finally:
+            encerrar_db(cursor, conexao)
+
+@app.route("/curriculo/<int:id_vaga>")
+def curriculo(id_vaga):
+
+    if not session:
+        return redirect('/')
+
+    try:
+        conexao, cursor = conectar_db()
+        comandoSQL = '''
+        SELECT c.*, v.Id_Empresa FROM vaga v JOIN candidato c ON c.id_vaga = v.id_vaga WHERE c.id_vaga = %s
+        '''
+        cursor.execute(comandoSQL, (id_vaga,))
+        curriculo = cursor.fetchall()
+
+        if not curriculo:
+            
+            return redirect('/empresa')
+
+        if session['Id_Empresa'] != curriculo[0]['Id_Empresa']:
+            
+            return redirect('/empresa')
+
+        return render_template('curriculo.html', curriculo=curriculo)
+
+    except Error as erro:
+        return f"Erro de BD: {erro}"
+    except Exception as erro:
+        return f"Erro de BackEnd: {erro}"
+    finally:
+        encerrar_db(cursor, conexao)
+
+@app.route('/download/<filename>')
+def download(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=False)
+
+@app.route('/delete/<filename>')
+def delete_file(filename):
+    try:
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        os.remove(file_path)
+
+        conexao, cursor = conectar_db()
+        comandoSQL = 'DELETE FROM candidato WHERE curriculo = %s'
+        cursor.execute(comandoSQL, (filename,))
+        conexao.commit()
+
+        return redirect('/empresa')
+
+    except Error as erro:
+        return f"Erro de BD: {erro}"
+    except Exception as erro:
+        return f"Erro de BackEnd: {erro}"
+    finally:
+        encerrar_db(cursor, conexao)
+
+@app.route('/procurar', methods=['POST'])
+def procurar():
+    if request.method == 'POST':
+
+        procurar = request.form['pesquisar']
+
+        conexao, cursor = conectar_db()
+        comandoSQL = 'SELECT * FROM vaga WHERE titulo LIKE %s AND status = "Ativa" ORDER BY Id_Vaga DESC'
+        cursor.execute(comandoSQL, (f'%{procurar}%',))
+        resultados = cursor.fetchall()
+
+        return render_template('procurar.html', resultados=resultados, procurar=procurar)
 
 #FINAL DO CÓDIGO
 if __name__ == '__main__':
