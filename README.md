@@ -17,7 +17,7 @@ A EmpreGO! tem como objetivo atender uma problemática atual da cidade de Itapev
 ## Status do Projeto
 **Status:**
 
-🚀 Projeto Lançado! 🚀
+🚧 Projeto Em Construção! 🚧
 ## Funcionalidades do Sistema
 
  - Esse sistema está previsto a ter 3 tipos de usuários diferentes, usuário padrão, empresa e administrador;
